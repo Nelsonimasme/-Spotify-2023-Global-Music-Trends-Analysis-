@@ -820,6 +820,65 @@ print(top_artists)
 
 
 
+- **Top 10 Artist Songs With Thier Highest Streams**
+
+
+```python
+
+# Group by artist and sum their streams
+artist_streams = spotify_2023_df.groupby("artist(s)_name")["streams"].sum()
+
+# Sort and take top 3
+top_artists = artist_streams.sort_values(ascending=False).head(10)
+
+print(top_artists)
+
+```
+<img width="265" height="174" alt="top_10_artist" src="https://github.com/user-attachments/assets/613fb509-41b2-4ed3-bd68-cc15d3b303e6" />
+
+
+
+- **Formating with the commas to be readable**
+
+```python
+
+# Format with commas (readable)
+top_artists = top_artists.apply(lambda x: f"{int(x):,}")
+
+print(top_artists)
+
+```
+<img width="233" height="168" alt="formatted" src="https://github.com/user-attachments/assets/d372a73c-604f-4024-bd58-82ffa0d2f188" />
+
+
+
+- **Visualizing The Top Ten Artist With The Highest Streams**
+
+```python
+
+# Keep numeric values (without formating with commas yet)
+top_artists = spotify_2023_df.groupby("artist(s)_name")["streams"].sum().sort_values(ascending=False).head(10)
+
+# Plot
+ax = top_artists.plot(kind="bar", color="skyblue", figsize=(10,6))
+
+# Add labels on top of bars with commas
+for i, value in enumerate(top_artists):
+    plt.text(i, value, f"{value:,.0f}", ha="center", va="bottom", fontsize=7)
+
+plt.title("Top 10 Artists by Total Streams", fontsize=14)
+plt.ylabel("Total Streams")
+plt.xlabel("Artists")
+plt.xticks(rotation=45, ha="right")
+plt.tight_layout()
+plt.show()
+
+```
+
+<img width="692" height="325" alt="Capture" src="https://github.com/user-attachments/assets/c78affb1-55e6-4bf9-9aa1-79c46f13438b" />
+
+
+
 
 ### **Key Findings**
 ---
@@ -832,14 +891,23 @@ print(top_artists)
 
 ---
 
-#### 2. **Release Year 2023**
+#### 1. **The top 10 artists dominated billions of streams globally.**
+**The Weeknd** leads with 14.18B streams.
+**Taylor Swift & Ed Sheeran** follow closely, each crossing 13B streams.
+Other global stars like **Harry Styles, Bad Bunny, Olivia Rodrigo, Eminem, Bruno Mars, Arctic Monkeys, and Imagine Dragons** also ranked high.
+
+Key Takeaway: The top 3 artists alone highlight a huge concentration of streams, but diversity across genres drives global reach.
+
+---
+
+#### 3. **Release Year 2023**
 
 * Tracks released in **2023 alone** already have huge streaming totals.
 * This indicates that **new releases quickly accumulate streams**, reflecting the importance of playlists and promotions on platforms.
 
 ---
 
-#### 3. **Tracks & Energy**
+#### 4. **Tracks & Energy**
 
 * Using our categorization:
 
@@ -850,14 +918,14 @@ print(top_artists)
 
 ---
 
-#### 4. **BPM**
+#### 5. **BPM**
 
 * A significant number of tracks have **BPM between 120–140**, the range typical for dance/pop songs.
 * This aligns with the observation that **popular tracks lean toward upbeat, danceable tempos**.
 
 ---
 
-#### 5. **Top Artists**
+#### 6. **Top Artists**
 
 * Based on the **grouo_by analysis**:
 
@@ -866,14 +934,14 @@ print(top_artists)
 
 ---
 
-#### 6. **Top Tracks**
+#### 7. **Top Tracks**
 
 * The **top 3 tracks by streams & energy** are strong candidates for future playlists.
 * They are all **high-energy, highly streamed tracks**, which means they resonate with listeners and are playlist-ready.
 
 ---
 
-### 7. **Visual Insights**
+### 8. **Visual Insights**
 
 * The **bar chart of average energy by artist (Top 10)** shows most top-streaming artists maintain **very high energy levels (above 90%)**.
 * Adding stream counts above the bars confirmed their dominance.
@@ -892,6 +960,8 @@ Tracks released in **2023 alone already account for a significant share of strea
 At the artist level, a few global superstars dominate the charts, consistently producing multiple high-streaming tracks. Their dominance reflects not only musical appeal but also the impact of branding, fanbase strength, and industry influence.
 
 In summary, **high-energy tracks from top global artists drive the majority of streams**, and future playlist strategies should prioritize these songs while still including select medium-energy tracks for variety.
+
+The analysis also shows that a few global superstars dominate streaming, with **The Weeknd, Taylor Swift, and Ed Sheeran** leading the charts by a wide margin. This highlights the strong influence of established artists on global music trends in 2023.
 
 ---
 
@@ -928,6 +998,9 @@ In summary, **high-energy tracks from top global artists drive the majority of s
 6. **Cross-Platform Opportunities**
 
    * Since tracks also appear in Apple, Deezer, and Shazam charts, target songs with cross-platform traction for higher playlist impact.
+
+7. **Artist Streams:**
+Future playlists and promotions should prioritize high-performing artists like **The Weeknd, Taylor Swift, and Ed Sheeran**, while also exploring opportunities to boost visibility for rising artists with strong streaming momentum.
 
 ---
 
