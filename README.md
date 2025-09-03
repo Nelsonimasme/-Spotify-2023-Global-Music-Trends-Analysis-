@@ -525,13 +525,13 @@ print(f"Total streams for songs released in 2023: {total_streams_2023:,}")
 
 no_of_tracks_over_1m = spotify_2023_df[spotify_2023_df["streams"] > 100000000]
 
-# counting the tracks over one million
+# # counting the tracks hundred one million
 count_over_100M = no_of_tracks_over_1m["track_name"].shape[0]
 
-print(f" The Total No Of Tracks over One Million is: {count_over_100M:}")
+print(f" The Total No Of Tracks over Hundred Million is: {count_over_100M:}")
 
 ```
-<img width="332" height="34" alt="Capture" src="https://github.com/user-attachments/assets/ccf54d0a-73f0-4229-a02e-f4fc7f635739" />
+<img width="348" height="25" alt="Capture" src="https://github.com/user-attachments/assets/e2816180-87bf-452a-be51-ab853ff74ed0" />
 
 
 
