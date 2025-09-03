@@ -440,33 +440,499 @@ spotify_2023_df["in_deezer_playlists"].mean()
 <img width="375" height="241" alt="Capture" src="https://github.com/user-attachments/assets/fb061bd3-b088-4327-bb67-6ee8bd963bab" />
 
 
+- **. Reconfirming if there are still Missing values**: 
+
+```python
+
+spotify_2023_df.isna().any()
+
+```
+<img width="247" height="326" alt="Capture" src="https://github.com/user-attachments/assets/f4ce59d3-fe48-4fdc-9dbd-1aefecf059cc" />
 
 
 
 
+- **. Check for  Duplicates**:
+
+```python
+# Recounting the data to confirm is there are still missing values
+
+#Solution
+len(spotify_2023_df)
+
+```
+<img width="471" height="85" alt="Capture" src="https://github.com/user-attachments/assets/ab22b3a1-297e-4ed2-b002-b58a49d74bf1" />
+
+
+
+- **.Dropping of Duplicates**:
+
+```python
+
+# Droping any duplicates 
+# SOLUTION
+
+spotify_2023_df.drop_duplicates()
+
+```
+<img width="862" height="348" alt="Capture" src="https://github.com/user-attachments/assets/57b23174-28a7-4722-9263-22bc96884155" />
+
+
+
+- **. Handling Duplicates**:
+
+```python
+
+# re-counting our data point again 
+# SOLUTION
+
+len(spotify_2023_df)
+# This shows that there was NO duplicates on our dataset
+
+```
+<img width="530" height="128" alt="Capture" src="https://github.com/user-attachments/assets/384dc585-a524-4341-8c93-a790b3c4dc6f" />
 
 
 
 
+### **Data Aggregation And Filtering**
+
+```python
+
+# Calculate the total streams for songs released in 2023.
+
+# SOLUTION
+# Filter rows where released_year == 2023
+spotify_2023_releases = spotify_2023_df[spotify_2023_df["released_year"] == 2023]
+
+# Calculate total streams
+total_streams_2023 = spotify_2023_releases["streams"].sum()
+
+print(f"Total streams for songs released in 2023: {total_streams_2023:,}")
+
+```
+<img width="425" height="20" alt="Capture" src="https://github.com/user-attachments/assets/0bf4b399-00ee-4b3d-a94a-4111ed188cbb" />
 
 
 
 
+- **. Counting the number of tracks that have over 100 million streams.**
+
+```python
+
+# Numbers of Tracks that have over 0ne million streams 
+# SOLUTION
+
+no_of_tracks_over_1m = spotify_2023_df[spotify_2023_df["streams"] > 100000000]
+
+# counting the tracks over one million
+count_over_100M = no_of_tracks_over_1m["track_name"].shape[0]
+
+print(f" The Total No Of Tracks over One Million is: {count_over_100M:}")
+
+```
+<img width="332" height="34" alt="Capture" src="https://github.com/user-attachments/assets/ccf54d0a-73f0-4229-a02e-f4fc7f635739" />
 
 
 
 
+- **. Finding the average danceability for songs released in 2023.**
+
+
+```python
+
+# The Average Danceability of songs release in 2023
+# SOLUTION
+
+# Condition 1
+# filtering the required data
+avg_danceability = spotify_2023_df[spotify_2023_df["released_year"] == 2023]
+
+# Condition 2
+# Calculating the Averaging danceability
+ave_danaceability_of_songs_in_2023 = avg_danceability["danceability_%"].mean().round(5)
+
+# Condition 3
+# Getting the Result
+print(f" The Average Danceability Of Songs In 2023 is: {ave_danaceability_of_songs_in_2023}")
+
+```
+<img width="334" height="24" alt="Capture" src="https://github.com/user-attachments/assets/7fbe7f47-d5f0-4774-9638-8a8544d84f10" />
+
+
+
+ - .**Finding the track with the highest number of streams in the dataset.**
+
+```python
+
+# SOLUTION
+
+# Condition 1.
+# Filtering the required Columns
+spotify_2023_df["streams"] = pd.to_numeric(spotify_2023_df["streams"])
+
+# Findind the row with the highest number of streams
+top_track = spotify_2023_df.loc[spotify_2023_df["streams"].idxmax()]
+
+print("The Track with the highest streams is:")
+print(top_track[["track_name", "artist(s)_name", "streams"]])
+
+```
+<img width="362" height="71" alt="Capture" src="https://github.com/user-attachments/assets/2143457b-29ac-4f61-b7e4-8ff66369e6b6" />
+
+
+
+-**.Categorizing songs based on their energy level:**
+
+
+```python
+
+# Creating a Control Flow formula to categorize songs based on their energy level:
+# Define a function using categorize_energy
+
+# SOLUTION
+def categorize_energy(energy):
+    if energy > 70:
+        return "High Energy"
+    elif energy >= 40:
+        return "Medium Energy"
+    else:
+        return "Low Energy"
+
+# Applying the function to the dataframe
+spotify_2023_df["Energy_Category"] = spotify_2023_df["energy_%"].apply(categorize_energy)
+
+# Check for result result
+print(spotify_2023_df[["energy_%", "Energy_Category"]].head(100))
+
+```
+<img width="222" height="184" alt="Capture" src="https://github.com/user-attachments/assets/cc3923f1-af0f-4176-a0c6-153d4ebd6e4e" />
 
 
 
 
+- .**Extracting the first and Last 3 characters of Track_name and Artist_name**
+
+
+```python
+
+# Condition 1
+# Extract first 3 characters of track names 
+spotify_2023_df["track_first3"] = spotify_2023_df["track_name"].str[:3]
+
+# Condition 2
+# Extract last 3 characters of artist names
+spotify_2023_df["artist_last3"] = spotify_2023_df["artist(s)_name"].str[-3:]
+
+# Condition 3
+# Preview Result
+print(spotify_2023_df[["track_name", "track_first3", "artist(s)_name", "artist_last3"]].head(10))
+
+```
+<img width="337" height="303" alt="Capture" src="https://github.com/user-attachments/assets/5385feb8-f8f1-4c65-a543-e9605aaed7bd" />
 
 
 
 
+- **.Highlighting Top Tracks With The Highest Streams**
+
+```python
+
+# SOLUTION
+
+# Condition 1
+# Highlight top 5 streams
+def highlight_top5(val):
+    color = "background-color: yellow"
+    return color if val in top5_streams else ""
+
+# Find top 5 stream values
+top5_streams = spotify_2023_df["streams"].nlargest(5).values
+
+ranking_the_top_streams = spotify_2023_df.style.applymap(
+    highlight_top5, subset=["streams"])
+ranking_the_top_streams
+
+```
+<img width="842" height="349" alt="Capture" src="https://github.com/user-attachments/assets/5025bf7e-24b2-43eb-9031-36d163907c90" />
+
+
+
+- **Highlight Tracks with Energy Above 80%**
+
+```python
+
+# highting the track energy above 80%
+
+# SOLUTION
+# Condition 1
+def highlight_energy(val):
+    color = "background-color: Green"
+    return color if val > 80 else ""
+
+# Condition 2
+spotify_2023_df.style.applymap(
+    highlight_energy, subset=["energy_%"]
+)
+
+```
+<img width="486" height="442" alt="Capture" src="https://github.com/user-attachments/assets/2d6dccf4-f5bd-42ff-8682-17187eec8f04" />
+
+
+
+- **.Combining both Rows**
+
+
+```python
+
+def highlight_rows(row):
+    if row["streams"] in top5_streams:
+        return ["background-color: yellow"] * len(row)
+    elif row["energy_%"] > 80:
+        return ["background-color: lightgreen"] * len(row)
+    else:
+        return [""] * len(row)
+
+spotify_2023_df.style.apply(highlight_rows, axis=1)
+
+```
+<img width="885" height="406" alt="Capture" src="https://github.com/user-attachments/assets/cbc1af29-58a6-44c9-83d9-521e5c87b480" />
 
 
 
 
+- **Calculate the overall average stream count for all tracks in the dataset**
 
 
+```python
+
+# Calculate the overall average stream count
+
+# SOLUTION
+average_streams = spotify_2023_df["streams"].mean()
+
+print("Average streams per track:", average_streams)
+
+```
+<img width="329" height="18" alt="Capture" src="https://github.com/user-attachments/assets/c74eef74-183f-4111-9b1d-dd265bf76e2a" />
+
+
+- **Calculate the total number of streams across all tracks in 2023.**
+
+```python
+
+# Total streams across all tracks in 2023
+
+# SOLUTION
+total_streams = spotify_2023_df["streams"].sum()
+
+print("Total streams across all tracks in 2023:", total_streams)
+
+```
+<img width="367" height="27" alt="Capture" src="https://github.com/user-attachments/assets/5d09d97e-9740-433e-989c-6e2dabf15710" />
+
+
+- **Count the number of tracks with a BPM between 120 and 140**
+
+```python
+
+tracks_bpm_120_140 = spotify_2023_df[
+    (spotify_2023_df["bpm"] >= 120) & (spotify_2023_df["bpm"] <= 140)
+].shape[0]
+
+print("Number of tracks with BPM between 120 and 140:", tracks_bpm_120_140)
+
+```
+<img width="359" height="23" alt="Capture" src="https://github.com/user-attachments/assets/a0f79826-c6ec-4dc7-9497-17af522bf019" />
+
+
+
+
+### **Summarizing and Visualizing Data:**
+
+```python
+
+avg_energy_by_artist = (
+    spotify_2023_df.groupby("artist(s)_name")["energy_%"]
+    .mean()
+    .sort_values(ascending=False)
+)
+avg_energy_by_artist.head(10)
+
+```
+<img width="291" height="166" alt="Capture" src="https://github.com/user-attachments/assets/d7685c74-af59-404d-9079-f676c8db7543" />
+
+```pyhon
+import matplotlib.pyplot as plt
+
+plt.figure(figsize=(8, 6))
+
+avg_energy_by_artist.head(10).plot(kind="bar", color="skyblue")  # show top 10 for clarity
+
+plt.title("Average Energy of Songs by Artist (Top 10)", fontsize=14)
+plt.xlabel("Artist", fontsize=12)
+plt.ylabel("Average Energy (%)", fontsize=12)
+plt.xticks(rotation=75, ha="right")
+plt.tight_layout()
+plt.show()
+
+```
+<img width="521" height="341" alt="Capture" src="https://github.com/user-attachments/assets/9d9e24fc-58dc-48e9-b2fe-93cb43cc105f" />
+
+
+**Based on my analysis, recommend the top 3 tracks to focus on for future playlists based on
+streams and energy levels.Identify the top 3 artists who have the most streamed tracks**
+
+- **.Top 3 Tracks To Focus On (Streams + Energy)**
+
+```python
+
+# Calculate average energy to set a "high energy" threshold
+energy_threshold = spotify_2023_df["energy_%"].mean()
+
+# Filter for high energy tracks
+high_energy_tracks = spotify_2023_df[spotify_2023_df["energy_%"] > energy_threshold]
+
+# Sorting streams by top 3
+top_tracks = high_energy_tracks.sort_values(by="streams", ascending=False).head(3)
+
+print(top_tracks[["track_name", "artist(s)_name", "streams", "energy_%"]])
+
+```
+<img width="494" height="141" alt="Capture" src="https://github.com/user-attachments/assets/3976b0da-6f79-49d4-afd2-1d4af126bb7a" />
+
+
+
+- **Top 3 artists with the most streamed tracks**
+
+```python
+
+# Group by artist and sum their streams
+artist_streams = spotify_2023_df.groupby("artist(s)_name")["streams"].sum()
+
+# Sort and take top 3
+top_artists = artist_streams.sort_values(ascending=False).head(3)
+
+print(top_artists)
+
+```
+<img width="252" height="82" alt="Capture" src="https://github.com/user-attachments/assets/51fdc0ea-a7e7-4266-b612-7fb8b43a5c85" />
+
+
+
+
+### **Key Findings**
+---
+
+#### 1. **Streams**
+
+* The dataset contains tracks with **massive streaming numbers**, some crossing the **hundreds of millions**.
+* The **total number of streams across all tracks** is extremely large, showing the dataset is dominated by globally popular hits.
+* The **average stream count per track** is high, but only a small percentage of songs cross **100M streams** → meaning success is concentrated among top hits.
+
+---
+
+#### 2. **Release Year 2023**
+
+* Tracks released in **2023 alone** already have huge streaming totals.
+* This indicates that **new releases quickly accumulate streams**, reflecting the importance of playlists and promotions on platforms.
+
+---
+
+#### 3. **Tracks & Energy**
+
+* Using our categorization:
+
+  * **High Energy (>70%)** → majority of tracks fall here, especially mainstream pop/EDM.
+  * **Medium Energy (40–70%)** → balanced tracks, often ballads or softer pop.
+  * **Low Energy (<40%)** → very few tracks, showing listeners favor energetic music.
+* High energy tracks (e.g., Olivia Rodrigo’s *“vampire”*, Taylor Swift’s *“Cruel Summer”*) dominate in both streams and popularity.
+
+---
+
+#### 4. **BPM**
+
+* A significant number of tracks have **BPM between 120–140**, the range typical for dance/pop songs.
+* This aligns with the observation that **popular tracks lean toward upbeat, danceable tempos**.
+
+---
+
+#### 5. **Top Artists**
+
+* Based on the **grouo_by analysis**:
+
+  * The **Top 3 artists** by total streams are clear leaders (global stars with multiple hits in the dataset).
+  * These artists consistently appear across charts and playlists, consolidating their dominance.
+
+---
+
+#### 6. **Top Tracks**
+
+* The **top 3 tracks by streams & energy** are strong candidates for future playlists.
+* They are all **high-energy, highly streamed tracks**, which means they resonate with listeners and are playlist-ready.
+
+---
+
+### 7. **Visual Insights**
+
+* The **bar chart of average energy by artist (Top 10)** shows most top-streaming artists maintain **very high energy levels (above 90%)**.
+* Adding stream counts above the bars confirmed their dominance.
+
+---
+
+
+### **Conclusions**
+
+---
+
+From the analysis of the Spotify 2023 dataset, it is evident that **streaming success is concentrated among a small group of highly popular tracks and artists**. The majority of songs with the highest streams are **high-energy** and fall within the **120–140 BPM range**, highlighting that listeners favor upbeat, energetic, and danceable music.
+
+Tracks released in **2023 alone already account for a significant share of streams**, showing how quickly new releases gain traction, largely supported by playlists and strong fan engagement. Meanwhile, only a limited number of tracks achieve more than **100 million streams**, further emphasizing the competitive and hit-driven nature of the music industry.
+
+At the artist level, a few global superstars dominate the charts, consistently producing multiple high-streaming tracks. Their dominance reflects not only musical appeal but also the impact of branding, fanbase strength, and industry influence.
+
+In summary, **high-energy tracks from top global artists drive the majority of streams**, and future playlist strategies should prioritize these songs while still including select medium-energy tracks for variety.
+
+---
+
+
+
+### **Reconmendation**
+---
+
+1. **Prioritize High-Streaming Tracks**
+
+   * Focus playlists around the top 3 tracks with the highest streams since they already attract the largest audiences.
+   * These tracks should be placed at the beginning of playlists to maximize engagement.
+
+2. **Leverage High-Energy Songs (Energy > 70%)**
+
+   * Data shows that high-energy tracks dominate listener preferences.
+   * Build playlists around these songs, especially those with BPM between 120–140, as they align with global hit trends.
+
+3. **Feature Top Artists Consistently**
+
+   * The top 3 artists with the most streams should be prioritized in multiple playlists.
+   * Collaborations or promotions involving these artists are likely to yield higher engagement.
+
+4. **Balance with Medium-Energy Tracks**
+
+   * While high-energy songs perform best, include some medium-energy tracks (40–70%) for variety.
+   * This balance keeps playlists engaging and avoids listener fatigue.
+
+5. **Focus on Recent Releases (2023)**
+
+   * Tracks released in 2023 already contribute heavily to overall streams.
+   * Promote these songs in “New Music” or “Trending” playlists to capture current listener demand.
+
+6. **Cross-Platform Opportunities**
+
+   * Since tracks also appear in Apple, Deezer, and Shazam charts, target songs with cross-platform traction for higher playlist impact.
+
+---
+
+👉 In short: **Build playlists around top artists, prioritize high-energy & high-stream tracks, include trending 2023 songs, and balance with mid-energy content for variety.**
+
+---
+
+# **THE END**
